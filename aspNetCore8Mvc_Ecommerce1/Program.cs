@@ -1,5 +1,7 @@
 
 using aspNetCore8Mvc_Ecommerce1.Data;
+using aspNetCore8Mvc_Ecommerce1.Impls;
+using aspNetCore8Mvc_Ecommerce1.Intfs;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -13,8 +15,15 @@ builder.Services.AddDbContext<Hshop2023Context>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
-var app = builder.Build();
 
+builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
+
+// ADD SCOPE
+builder.Services.AddScoped<IHangHoaAppService, HangHoaAppService>();
+
+
+var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

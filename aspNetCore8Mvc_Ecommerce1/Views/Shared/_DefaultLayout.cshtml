@@ -38,13 +38,13 @@
         <!-- Spinner End -->
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            @await Html.PartialAsync("Components/_Topbar")
-            @await Html.PartialAsync("Components/_Navbar")
+            @await Html.PartialAsync("BaseComponents/_Topbar")
+            @await Html.PartialAsync("BaseComponents/_Navbar")
         </div>
         <!-- Navbar End -->
         @RenderBody()
 
-        @await Html.PartialAsync("Components/_Footer")
+        @await Html.PartialAsync("BaseComponents/_Footer")
     </div>
 
     <!-- Back to Top -->
@@ -61,5 +61,49 @@
 
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
+
+    @RenderSection("Scripts", required: false)
+    <script>
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const form = document.querySelector('#searchHHFrom');
+        //     form.addEventListener('submit', function (e) {
+        //         const currentUrlParams = new URLSearchParams(window.location.search);
+        //         // Kiểm tra nếu URL có chứa tham số `MaLoai`
+        //         if (currentUrlParams.has('MaLoai')) {
+        //             // Thêm `MaLoai` vào form nếu chưa có
+        //             const hiddenInput = document.createElement('input');
+        //             hiddenInput.type = 'hidden';
+        //             hiddenInput.name = 'MaLoai';
+        //             hiddenInput.value = currentUrlParams.get('MaLoai');
+        //             form.appendChild(hiddenInput);
+        //         }
+        //     });
+        // });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('#searchHHFrom');
+            const currentUrlParams = new URLSearchParams(window.location.search);
+            const searchInput = document.querySelector('#searchText');
+
+            if (currentUrlParams.has('TuKhoa')) {
+                searchInput.value = currentUrlParams.get('TuKhoa');
+            }
+
+            form.addEventListener('submit', function (e) {
+                
+
+                // Lặp qua tất cả các query parameter và thêm vào form nếu chưa có
+                currentUrlParams.forEach((value, key) => {
+                    if (!form.querySelector(`[name="${key}"]`)) {
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = key;
+                        hiddenInput.value = value;
+                        form.appendChild(hiddenInput);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
