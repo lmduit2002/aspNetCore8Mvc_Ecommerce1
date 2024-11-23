@@ -6,16 +6,13 @@ namespace aspNetCore8Mvc_Ecommerce1.Data;
 
 public partial class Hshop2023Context : DbContext
 {
-    private readonly IConfiguration _configuration;
-    //public Hshop2023Context(IConfiguration configuration)
-    //{
-    //    _configuration = configuration;
-    //}
+    public Hshop2023Context()
+    {
+    }
 
-    public Hshop2023Context(DbContextOptions<Hshop2023Context> options, IConfiguration configuration)
+    public Hshop2023Context(DbContextOptions<Hshop2023Context> options)
         : base(options)
     {
-        _configuration = configuration;
     }
 
     public virtual DbSet<BanBe> BanBes { get; set; }
@@ -27,6 +24,14 @@ public partial class Hshop2023Context : DbContext
     public virtual DbSet<GopY> Gopies { get; set; }
 
     public virtual DbSet<HangHoa> HangHoas { get; set; }
+
+    public virtual DbSet<HangHoaDetail> HangHoaDetails { get; set; }
+
+    public virtual DbSet<HangHoaDetailHistory> HangHoaDetailHistories { get; set; }
+
+    public virtual DbSet<HangHoaDetailImage> HangHoaDetailImages { get; set; }
+
+    public virtual DbSet<HangHoaHistory> HangHoaHistories { get; set; }
 
     public virtual DbSet<HoaDon> HoaDons { get; set; }
 
@@ -46,7 +51,7 @@ public partial class Hshop2023Context : DbContext
 
     public virtual DbSet<PhongBan> PhongBans { get; set; }
 
-    public virtual DbSet<TrangThai> TrangThais { get; set; }
+    public virtual DbSet<SysCodeMaster> SysCodeMasters { get; set; }
 
     public virtual DbSet<TrangWeb> TrangWebs { get; set; }
 
@@ -55,7 +60,8 @@ public partial class Hshop2023Context : DbContext
     public virtual DbSet<YeuThich> YeuThiches { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(_configuration["ConnectionStrings:Default"]);
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-L4BLRQD\\SQLEXPRESS;Database=Hshop2023;User Id=user1;Password=123456;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -66,12 +72,20 @@ public partial class Hshop2023Context : DbContext
             entity.ToTable("BanBe");
 
             entity.Property(e => e.MaBb).HasColumnName("MaBB");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.HoTen).HasMaxLength(50);
             entity.Property(e => e.MaHh).HasColumnName("MaHH");
             entity.Property(e => e.MaKh)
                 .HasMaxLength(20)
                 .HasColumnName("MaKH");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.NgayGui)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -92,9 +106,20 @@ public partial class Hshop2023Context : DbContext
             entity.ToTable("ChiTietHD");
 
             entity.Property(e => e.MaCt).HasColumnName("MaCT");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.GiamGia).HasDefaultValue(0.0);
             entity.Property(e => e.MaHd).HasColumnName("MaHD");
             entity.Property(e => e.MaHh).HasColumnName("MaHH");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.SoLuong).HasDefaultValue(1);
+            entity.Property(e => e.VersionHh).HasColumnName("VersionHH");
+            entity.Property(e => e.VersionHhdetail).HasColumnName("VersionHHDetail");
 
             entity.HasOne(d => d.MaHdNavigation).WithMany(p => p.ChiTietHds)
                 .HasForeignKey(d => d.MaHd)
@@ -113,9 +138,17 @@ public partial class Hshop2023Context : DbContext
             entity.ToTable("ChuDe");
 
             entity.Property(e => e.MaCd).HasColumnName("MaCD");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.MaNv)
                 .HasMaxLength(50)
                 .HasColumnName("MaNV");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.TenCd)
                 .HasMaxLength(50)
                 .HasColumnName("TenCD");
@@ -135,10 +168,18 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.MaGy)
                 .HasMaxLength(50)
                 .HasColumnName("MaGY");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.DienThoai).HasMaxLength(50);
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.HoTen).HasMaxLength(50);
             entity.Property(e => e.MaCd).HasColumnName("MaCD");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.NgayGy)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnName("NgayGY");
@@ -152,24 +193,32 @@ public partial class Hshop2023Context : DbContext
 
         modelBuilder.Entity<HangHoa>(entity =>
         {
-            entity.HasKey(e => e.MaHh).HasName("PK_Products");
+            entity.HasKey(e => e.MaHh);
 
             entity.ToTable("HangHoa");
 
             entity.Property(e => e.MaHh).HasColumnName("MaHH");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.DonGia).HasDefaultValue(0.0);
             entity.Property(e => e.Hinh).HasMaxLength(50);
             entity.Property(e => e.MaNcc)
                 .HasMaxLength(50)
                 .HasColumnName("MaNCC");
             entity.Property(e => e.MoTaDonVi).HasMaxLength(50);
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.NgaySx)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("NgaySX");
             entity.Property(e => e.TenAlias).HasMaxLength(50);
             entity.Property(e => e.TenHh)
-                .HasMaxLength(50)
+                .HasMaxLength(200)
                 .HasColumnName("TenHH");
 
             entity.HasOne(d => d.MaLoaiNavigation).WithMany(p => p.HangHoas)
@@ -179,6 +228,113 @@ public partial class Hshop2023Context : DbContext
             entity.HasOne(d => d.MaNccNavigation).WithMany(p => p.HangHoas)
                 .HasForeignKey(d => d.MaNcc)
                 .HasConstraintName("FK_Products_Suppliers");
+        });
+
+        modelBuilder.Entity<HangHoaDetail>(entity =>
+        {
+            entity.HasKey(e => e.MaHhdetail);
+
+            entity.ToTable("HangHoaDetail");
+
+            entity.Property(e => e.MaHhdetail).HasColumnName("MaHHDetail");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.Hinh).HasMaxLength(50);
+            entity.Property(e => e.MaHh).HasColumnName("MaHH");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.TenHh)
+                .HasMaxLength(200)
+                .HasColumnName("TenHH");
+            entity.Property(e => e.TenVietTat).HasMaxLength(50);
+
+            entity.HasOne(d => d.MaHhNavigation).WithMany(p => p.HangHoaDetails)
+                .HasForeignKey(d => d.MaHh)
+                .HasConstraintName("FK_HHDt_HH");
+        });
+
+        modelBuilder.Entity<HangHoaDetailHistory>(entity =>
+        {
+            entity.ToTable("HangHoaDetailHistory");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.Hinh).HasMaxLength(50);
+            entity.Property(e => e.MaHh).HasColumnName("MaHH");
+            entity.Property(e => e.MaHhdetail).HasColumnName("MaHHDetail");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.TenHh)
+                .HasMaxLength(200)
+                .HasColumnName("TenHH");
+            entity.Property(e => e.TenVietTat).HasMaxLength(50);
+
+            entity.HasOne(d => d.MaHhdetailNavigation).WithMany(p => p.HangHoaDetailHistories)
+                .HasForeignKey(d => d.MaHhdetail)
+                .HasConstraintName("FK_HHDt_HHDTHistory");
+        });
+
+        modelBuilder.Entity<HangHoaDetailImage>(entity =>
+        {
+            entity.ToTable("HangHoaDetailImage");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.Hinh).HasMaxLength(200);
+            entity.Property(e => e.MaHhdetail).HasColumnName("MaHHDetail");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+
+            entity.HasOne(d => d.MaHhdetailNavigation).WithMany(p => p.HangHoaDetailImages)
+                .HasForeignKey(d => d.MaHhdetail)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HHDT_HHDTImage");
+        });
+
+        modelBuilder.Entity<HangHoaHistory>(entity =>
+        {
+            entity.ToTable("HangHoaHistory");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.Hinh).HasMaxLength(50);
+            entity.Property(e => e.MaHh).HasColumnName("MaHH");
+            entity.Property(e => e.MaNcc)
+                .HasMaxLength(50)
+                .HasColumnName("MaNCC");
+            entity.Property(e => e.MoTaDonVi).HasMaxLength(50);
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.NgaySx)
+                .HasColumnType("datetime")
+                .HasColumnName("NgaySX");
+            entity.Property(e => e.TenAlias).HasMaxLength(50);
+            entity.Property(e => e.TenHh)
+                .HasMaxLength(50)
+                .HasColumnName("TenHH");
+
+            entity.HasOne(d => d.MaHhNavigation).WithMany(p => p.HangHoaHistories)
+                .HasForeignKey(d => d.MaHh)
+                .HasConstraintName("FK_HH_HHHistory");
         });
 
         modelBuilder.Entity<HoaDon>(entity =>
@@ -194,6 +350,10 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.CachVanChuyen)
                 .HasMaxLength(50)
                 .HasDefaultValue("Airline");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.DiaChi).HasMaxLength(60);
             entity.Property(e => e.GhiChu).HasMaxLength(50);
             entity.Property(e => e.HoTen).HasMaxLength(50);
@@ -203,6 +363,10 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.MaNv)
                 .HasMaxLength(50)
                 .HasColumnName("MaNV");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.NgayCan)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -212,6 +376,9 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.NgayGiao)
                 .HasDefaultValueSql("(((1)/(1))/(1900))")
                 .HasColumnType("datetime");
+            entity.Property(e => e.Status)
+                .HasMaxLength(20)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.MaKhNavigation).WithMany(p => p.HoaDons)
                 .HasForeignKey(d => d.MaKh)
@@ -221,11 +388,6 @@ public partial class Hshop2023Context : DbContext
                 .HasForeignKey(d => d.MaNv)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_HoaDon_NhanVien");
-
-            entity.HasOne(d => d.MaTrangThaiNavigation).WithMany(p => p.HoaDons)
-                .HasForeignKey(d => d.MaTrangThai)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_HoaDon_TrangThai");
         });
 
         modelBuilder.Entity<HoiDap>(entity =>
@@ -238,9 +400,17 @@ public partial class Hshop2023Context : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("MaHD");
             entity.Property(e => e.CauHoi).HasMaxLength(50);
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.MaNv)
                 .HasMaxLength(50)
                 .HasColumnName("MaNV");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.NgayDua).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.TraLoi).HasMaxLength(50);
 
@@ -258,6 +428,10 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.MaKh)
                 .HasMaxLength(20)
                 .HasColumnName("MaKH");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.DiaChi).HasMaxLength(60);
             entity.Property(e => e.DienThoai).HasMaxLength(24);
             entity.Property(e => e.Email).HasMaxLength(50);
@@ -266,6 +440,10 @@ public partial class Hshop2023Context : DbContext
                 .HasDefaultValue("Photo.gif");
             entity.Property(e => e.HoTen).HasMaxLength(50);
             entity.Property(e => e.MatKhau).HasMaxLength(50);
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.NgaySinh)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -280,7 +458,15 @@ public partial class Hshop2023Context : DbContext
 
             entity.ToTable("Loai");
 
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.Hinh).HasMaxLength(50);
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.TenLoai).HasMaxLength(50);
             entity.Property(e => e.TenLoaiAlias).HasMaxLength(50);
         });
@@ -294,10 +480,18 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.MaNcc)
                 .HasMaxLength(50)
                 .HasColumnName("MaNCC");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.DiaChi).HasMaxLength(50);
             entity.Property(e => e.DienThoai).HasMaxLength(50);
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.Logo).HasMaxLength(50);
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.NguoiLienLac).HasMaxLength(50);
             entity.Property(e => e.TenCongTy).HasMaxLength(50);
         });
@@ -311,9 +505,17 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.MaNv)
                 .HasMaxLength(50)
                 .HasColumnName("MaNV");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.HoTen).HasMaxLength(50);
-            entity.Property(e => e.MatKhau).HasMaxLength(50);
+            entity.Property(e => e.MatKhau).HasMaxLength(500);
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<PhanCong>(entity =>
@@ -323,6 +525,10 @@ public partial class Hshop2023Context : DbContext
             entity.ToTable("PhanCong");
 
             entity.Property(e => e.MaPc).HasColumnName("MaPC");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.MaNv)
                 .HasMaxLength(50)
                 .HasColumnName("MaNV");
@@ -330,6 +536,10 @@ public partial class Hshop2023Context : DbContext
                 .HasMaxLength(7)
                 .IsUnicode(false)
                 .HasColumnName("MaPB");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.NgayPc)
                 .HasColumnType("datetime")
                 .HasColumnName("NgayPC");
@@ -352,10 +562,18 @@ public partial class Hshop2023Context : DbContext
             entity.ToTable("PhanQuyen");
 
             entity.Property(e => e.MaPq).HasColumnName("MaPQ");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.MaPb)
                 .HasMaxLength(7)
                 .IsUnicode(false)
                 .HasColumnName("MaPB");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
 
             entity.HasOne(d => d.MaPbNavigation).WithMany(p => p.PhanQuyens)
                 .HasForeignKey(d => d.MaPb)
@@ -376,20 +594,42 @@ public partial class Hshop2023Context : DbContext
                 .HasMaxLength(7)
                 .IsUnicode(false)
                 .HasColumnName("MaPB");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.TenPb)
                 .HasMaxLength(50)
                 .HasColumnName("TenPB");
         });
 
-        modelBuilder.Entity<TrangThai>(entity =>
+        modelBuilder.Entity<SysCodeMaster>(entity =>
         {
-            entity.HasKey(e => e.MaTrangThai);
+            entity.HasKey(e => e.Id).HasName("FK_SysCodeMaster");
 
-            entity.ToTable("TrangThai");
+            entity.ToTable("SysCodeMaster");
 
-            entity.Property(e => e.MaTrangThai).ValueGeneratedNever();
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CdName)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.MoTa).HasMaxLength(500);
-            entity.Property(e => e.TenTrangThai).HasMaxLength(50);
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.Type)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Value).HasMaxLength(500);
         });
 
         modelBuilder.Entity<TrangWeb>(entity =>
@@ -398,6 +638,14 @@ public partial class Hshop2023Context : DbContext
 
             entity.ToTable("TrangWeb");
 
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.TenTrang).HasMaxLength(50);
             entity.Property(e => e.Url)
                 .HasMaxLength(250)
@@ -410,12 +658,22 @@ public partial class Hshop2023Context : DbContext
                 .HasNoKey()
                 .ToView("vChiTietHoaDon");
 
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.MaCt).HasColumnName("MaCT");
             entity.Property(e => e.MaHd).HasColumnName("MaHD");
             entity.Property(e => e.MaHh).HasColumnName("MaHH");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.TenHh)
-                .HasMaxLength(50)
+                .HasMaxLength(200)
                 .HasColumnName("TenHH");
+            entity.Property(e => e.VersionHh).HasColumnName("VersionHH");
+            entity.Property(e => e.VersionHhdetail).HasColumnName("VersionHHDetail");
         });
 
         modelBuilder.Entity<YeuThich>(entity =>
@@ -425,11 +683,19 @@ public partial class Hshop2023Context : DbContext
             entity.ToTable("YeuThich");
 
             entity.Property(e => e.MaYt).HasColumnName("MaYT");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.MaHh).HasColumnName("MaHH");
             entity.Property(e => e.MaKh)
                 .HasMaxLength(20)
                 .HasColumnName("MaKH");
             entity.Property(e => e.MoTa).HasMaxLength(255);
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.NgayChon).HasColumnType("datetime");
 
             entity.HasOne(d => d.MaHhNavigation).WithMany(p => p.YeuThiches)

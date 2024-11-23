@@ -9,7 +9,9 @@
                     <div class="d-flex justify-content-between fruite-name">
                         <a asp-controller="HangHoa" asp-action="Index" 
                             asp-route-MaLoai="@item.MaLoai"
-                           asp-route-TuKhoa="@Context.Request.Query["TuKhoa"]">
+                           asp-route-TuKhoa="@Context.Request.Query["TuKhoa"]"
+                           asp-route-DonGia="@Context.Request.Query["DonGia"]"
+                           asp-route-SortBy="@Context.Request.Query["SortBy"]">
                            <i class="fas @item.Icon me-2"></i>@item.TenLoai</a>
                         <span>(@item.SoLuong)</span>
                     </div>

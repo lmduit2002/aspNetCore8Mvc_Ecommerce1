@@ -6,5 +6,6 @@ namespace aspNetCore8Mvc_Ecommerce1.Intfs
     public interface IHangHoaAppService
     {
         Task<List<HangHoaVM>> HangHoa_SEARCH(HangHoaSearch? model);
+        Task<HangHoaVM?> HangHoa_ById(int id);
     }
 }

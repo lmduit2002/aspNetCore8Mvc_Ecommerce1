@@ -19,6 +19,14 @@ public partial class BanBe
 
     public string? GhiChu { get; set; }
 
+    public DateTime? CreatedOn { get; set; }
+
+    public string? CreatedBy { get; set; }
+
+    public DateTime? ModifiedOn { get; set; }
+
+    public string? ModifiedBy { get; set; }
+
     public virtual HangHoa MaHhNavigation { get; set; } = null!;
 
     public virtual KhachHang? MaKhNavigation { get; set; }

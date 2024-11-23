@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace aspNetCore8Mvc_Ecommerce1.Data;
 
-public partial class TrangWeb
+public partial class HangHoaDetailImage
 {
-    public int MaTrang { get; set; }
+    public int Id { get; set; }
 
-    public string TenTrang { get; set; } = null!;
+    public int MaHhdetail { get; set; }
 
-    public string Url { get; set; } = null!;
+    public string? Hinh { get; set; }
 
     public DateTime? CreatedOn { get; set; }
 
@@ -19,5 +19,5 @@ public partial class TrangWeb
 
     public string? ModifiedBy { get; set; }
 
-    public virtual ICollection<PhanQuyen> PhanQuyens { get; set; } = new List<PhanQuyen>();
+    public virtual HangHoaDetail MaHhdetailNavigation { get; set; } = null!;
 }

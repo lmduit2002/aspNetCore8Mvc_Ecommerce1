@@ -29,6 +29,14 @@ public partial class KhachHang
 
     public string? RandomKey { get; set; }
 
+    public DateTime? CreatedOn { get; set; }
+
+    public string? CreatedBy { get; set; }
+
+    public DateTime? ModifiedOn { get; set; }
+
+    public string? ModifiedBy { get; set; }
+
     public virtual ICollection<BanBe> BanBes { get; set; } = new List<BanBe>();
 
     public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();

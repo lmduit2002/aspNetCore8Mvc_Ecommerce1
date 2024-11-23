@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = WebApplication.CreateBuilder(args);
-//Scaffold-DbContext "Data Source=DESKTOP-L4BLRQD\SQLEXPRESS;User ID=user1;Password=123456;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Data -f
+//Scaffold-DbContext "Data Source=DESKTOP-L4BLRQD\SQLEXPRESS;Database=Hshop2023;User Id=user1;Password=123456;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Data -f
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

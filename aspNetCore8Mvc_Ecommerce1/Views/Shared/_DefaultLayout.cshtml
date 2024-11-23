@@ -28,6 +28,9 @@
 
     <!-- Template Stylesheet -->
     <link href="~/css/style.css" rel="stylesheet">
+
+    <link href="~/css/customStyle.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <div>
@@ -42,6 +45,26 @@
             @await Html.PartialAsync("BaseComponents/_Navbar")
         </div>
         <!-- Navbar End -->
+        <!-- Modal Search Start -->
+        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content rounded-0">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tìm kiếm sản phẩm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex align-items-center">
+                        <div class="input-group w-75 mx-auto d-flex">
+                            <form method="get" asp-controller="HangHoa" asp-action="Index">
+                                <input type="search" name="TuKhoa" class="form-control p-3" placeholder="Từ khóa" aria-describedby="search-icon-1">
+                                <button type="submit" id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></button>
+                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Search End -->
         @RenderBody()
 
         @await Html.PartialAsync("BaseComponents/_Footer")
@@ -63,35 +86,11 @@
     <script src="~/js/main.js"></script>
 
     @RenderSection("Scripts", required: false)
-    <script>
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     const form = document.querySelector('#searchHHFrom');
-        //     form.addEventListener('submit', function (e) {
-        //         const currentUrlParams = new URLSearchParams(window.location.search);
-        //         // Kiểm tra nếu URL có chứa tham số `MaLoai`
-        //         if (currentUrlParams.has('MaLoai')) {
-        //             // Thêm `MaLoai` vào form nếu chưa có
-        //             const hiddenInput = document.createElement('input');
-        //             hiddenInput.type = 'hidden';
-        //             hiddenInput.name = 'MaLoai';
-        //             hiddenInput.value = currentUrlParams.get('MaLoai');
-        //             form.appendChild(hiddenInput);
-        //         }
-        //     });
-        // });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.querySelector('#searchHHFrom');
-            const currentUrlParams = new URLSearchParams(window.location.search);
-            const searchInput = document.querySelector('#searchText');
-
-            if (currentUrlParams.has('TuKhoa')) {
-                searchInput.value = currentUrlParams.get('TuKhoa');
-            }
-
+    <script type="module">
+        const forms = document.querySelectorAll('#searchHHFrom');
+        const currentUrlParams = new URLSearchParams(window.location.search);
+        forms.forEach(form => {
             form.addEventListener('submit', function (e) {
-                
-
                 // Lặp qua tất cả các query parameter và thêm vào form nếu chưa có
                 currentUrlParams.forEach((value, key) => {
                     if (!form.querySelector(`[name="${key}"]`)) {
@@ -104,6 +103,14 @@
                 });
             });
         });
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.querySelector('#searchText');
+
+            if (currentUrlParams.has('TuKhoa')) {
+                searchInput.value = currentUrlParams.get('TuKhoa');
+            }
+        });
+        
     </script>
 </body>
 </html>

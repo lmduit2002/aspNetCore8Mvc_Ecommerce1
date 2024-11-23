@@ -8,9 +8,10 @@
         public string? TenLoai { get; set; }
         public DateTime? NgaySXFrom { get; set; }
         public DateTime? NgaySXTo { get; set; }
-        public double? DonGiaFrom { get; set; }
-        public double? DonGiaTo { get; set; }
+        public double? DonGia { get; set; }
         public bool? IsDiscount { get; set; }
         public string? TuKhoa { get; set; }
+        public string? sortBy { get; set; }
+
     }
 }

@@ -13,6 +13,14 @@ public partial class NhanVien
 
     public string? MatKhau { get; set; }
 
+    public DateTime? CreatedOn { get; set; }
+
+    public string? CreatedBy { get; set; }
+
+    public DateTime? ModifiedOn { get; set; }
+
+    public string? ModifiedBy { get; set; }
+
     public virtual ICollection<ChuDe> ChuDes { get; set; } = new List<ChuDe>();
 
     public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();

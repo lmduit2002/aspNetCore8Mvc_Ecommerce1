@@ -15,6 +15,14 @@ public partial class PhanCong
 
     public bool? HieuLuc { get; set; }
 
+    public DateTime? CreatedOn { get; set; }
+
+    public string? CreatedBy { get; set; }
+
+    public DateTime? ModifiedOn { get; set; }
+
+    public string? ModifiedBy { get; set; }
+
     public virtual NhanVien MaNvNavigation { get; set; } = null!;
 
     public virtual PhongBan MaPbNavigation { get; set; } = null!;
