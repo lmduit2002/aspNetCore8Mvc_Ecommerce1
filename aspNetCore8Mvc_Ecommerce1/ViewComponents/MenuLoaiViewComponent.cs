@@ -14,7 +14,7 @@ namespace aspNetCore8Mvc_Ecommerce1.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            IQueryable<MenuLoaiVM> data =  _dbContext.Loais.Select(lo => new MenuLoaiVM
+            IQueryable<LoaiVM> data =  _dbContext.Loais.Select(lo => new LoaiVM
             {
                 MaLoai = lo.MaLoai,
                 TenLoai = lo.TenLoai,

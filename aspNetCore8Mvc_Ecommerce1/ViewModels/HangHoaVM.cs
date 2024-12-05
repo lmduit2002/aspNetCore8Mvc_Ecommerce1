@@ -18,8 +18,8 @@ namespace aspNetCore8Mvc_Ecommerce1.ViewModels
         public int? Daban {  get; set; }
         public float? DiemDanhGia { get; set; }
 
-        public virtual Loai Loai { get; set; } = null!;
+        public virtual LoaiVM Loai { get; set; } = null!;
         public virtual List<HangHoaDetailVM> HangHoaDetail { get; set; } = null!;
-        public virtual List<HangHoaHistory> HangHoaHistory { get; set; } = null!;
+        public virtual List<HangHoaHistoryVM> HangHoaHistory { get; set; } = null!;
     }
 }

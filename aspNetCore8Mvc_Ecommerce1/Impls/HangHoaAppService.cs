@@ -33,7 +33,7 @@ namespace aspNetCore8Mvc_Ecommerce1.Impls
                                               Hinh = hh.Hinh ?? "",
                                               NgaySx = hh.NgaySx,
                                               GiamGia = hh.GiamGia,
-                                              Loai = hh.MaLoaiNavigation,
+                                              Loai = ConvertLoaiToLoaiVM(hh.MaLoaiNavigation),
                                               GiaDaGiam = hh.GiamGia > 0 ? Math.Round((double)hh.DonGia! - (double)hh.DonGia*hh.GiamGia/100, 2) : null
                                           });
             if(model != null)
@@ -82,29 +82,77 @@ namespace aspNetCore8Mvc_Ecommerce1.Impls
 
         public async Task<HangHoaVM?> HangHoa_ById (int id)
         {
-            IQueryable<HangHoaVM> hangHoa = from hh in _context.HangHoas
-                                               where hh.MaHh == id
-                                               select new HangHoaVM
-                                               {
-                                                   MaHh = hh.MaHh,
-                                                   TenHh = hh.TenHh,
-                                                   MaLoai = hh.MaLoai,
-                                                   MoTaDonVi = hh.MoTaDonVi,
-                                                   DonGia = hh.DonGia,
-                                                   Hinh = hh.Hinh,
-                                                   NgaySx = hh.NgaySx,
-                                                   GiamGia = hh.GiamGia,
-                                                   SoLanXem = hh.SoLanXem,
-                                                   MoTa = hh.MoTa,
-                                                   Loai = hh.MaLoaiNavigation,
-                                                   DiemDanhGia = 5, // tinh sau
-                                                   HangHoaDetail = ConvertModelToVM(hh.HangHoaDetails)
-                                               };
-            if (hangHoa == null) return null!;
-            return await hangHoa.FirstOrDefaultAsync();
+            //IQueryable<HangHoaVM> hangHoa = from hh in _context.HangHoas
+            //                                where hh.MaHh == id
+            //                                select new HangHoaVM
+            //                                {
+            //                                    MaHh = hh.MaHh,
+            //                                    TenHh = hh.TenHh,
+            //                                    MaLoai = hh.MaLoai,
+            //                                    MoTaDonVi = hh.MoTaDonVi,
+            //                                    DonGia = hh.DonGia,
+            //                                    Hinh = hh.Hinh,
+            //                                    NgaySx = hh.NgaySx,
+            //                                    GiamGia = hh.GiamGia,
+            //                                    SoLanXem = hh.SoLanXem,
+            //                                    MoTa = hh.MoTa,
+            //                                    Loai = hh.MaLoaiNavigation,
+            //                                    DiemDanhGia = 5, // tinh sau
+            //                                    HangHoaDetail = ConvertModelToVM(hh.HangHoaDetails)
+            //                                };
+            //if (hangHoa == null) return null!;
+            //var result = await hangHoa.FirstOrDefaultAsync();
+            var hh = await _context.HangHoas
+                .Include(h => h.MaLoaiNavigation)
+                .Include(h => h.HangHoaDetails)
+                .ThenInclude(d => d.HangHoaDetailImages)
+                .FirstOrDefaultAsync(h => h.MaHh == id);
+            if (hh == null) return null;
+            var hangHoaDetailVM = await ConvertModelToVM(hh.HangHoaDetails);
+            return new HangHoaVM
+            {
+                MaHh = hh.MaHh,
+                TenHh = hh.TenHh,
+                MaLoai = hh.MaLoai,
+                MoTaDonVi = hh.MoTaDonVi,
+                DonGia = hh.DonGia,
+                Hinh = hh.Hinh,
+                NgaySx = hh.NgaySx,
+                GiamGia = hh.GiamGia,
+                SoLanXem = hh.SoLanXem,
+                MoTa = hh.MoTa,
+                Loai = ConvertLoaiToLoaiVM(hh.MaLoaiNavigation),
+                DiemDanhGia = 5, // tinh sau
+                HangHoaDetail = hangHoaDetailVM
+            };
         }
 
-        private static List<HangHoaDetailVM> ConvertModelToVM(ICollection<HangHoaDetail> hangHoaDetails)
+        private  async Task<List<HangHoaDetailImageVM>> HangHoaDetailImage_By_HHDetailID(int id)
+        {
+            return await _context.HangHoaDetailImages.Where(e => e.MaHhdetail == id).
+                    Select( e => new HangHoaDetailImageVM
+                    {
+                        Id = e.Id,
+                        MaHhdetail = e.MaHhdetail,
+                        Hinh = e.Hinh
+                    }).ToListAsync();
+        }
+
+        private static LoaiVM ConvertLoaiToLoaiVM (Loai loai)
+        {
+            return new LoaiVM
+            {
+                Hinh = loai.Hinh,
+                Icon = loai.Hinh!,
+                MaLoai = loai.MaLoai,
+                TenLoai = loai.TenLoai,
+                ModifiedBy = loai.ModifiedBy,
+                MoTa = loai.MoTa,
+                TenLoaiAlias = loai.TenLoaiAlias,
+            };
+        }
+
+        private async Task<List<HangHoaDetailVM>> ConvertModelToVM(ICollection<HangHoaDetail> hangHoaDetails)
         {
             var data = new List<HangHoaDetailVM>();
             foreach (var item in hangHoaDetails)
@@ -121,7 +169,7 @@ namespace aspNetCore8Mvc_Ecommerce1.Impls
                     DaBan = item.DaBan,
                     Hinh = item.Hinh,
                     Version = item.Version,
-                    HangHoaDetailImages = item.HangHoaDetailImages,
+                    HangHoaDetailImages = await HangHoaDetailImage_By_HHDetailID(item.MaHhdetail),
                 };
                 data.Add(vm);
             }

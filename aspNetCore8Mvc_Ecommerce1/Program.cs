@@ -2,6 +2,7 @@
 using aspNetCore8Mvc_Ecommerce1.Data;
 using aspNetCore8Mvc_Ecommerce1.Impls;
 using aspNetCore8Mvc_Ecommerce1.Intfs;
+using aspNetCore8Mvc_Ecommerce1.Models.Services.HangHoa;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<Hshop2023Context>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
+
+builder.Services.AddTransient<HangHoaServicesInject>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddHttpContextAccessor();

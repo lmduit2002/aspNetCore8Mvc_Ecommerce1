@@ -1,9 +1,9 @@
-﻿using aspNetCore8Mvc_Ecommerce1.Data;
-
-namespace aspNetCore8Mvc_Ecommerce1.ViewModels
+﻿namespace aspNetCore8Mvc_Ecommerce1.ViewModels
 {
-    public class HangHoaDetailVM
+    public class HangHoaDetailHistoryVM
     {
+        public int Id { get; set; }
+
         public int MaHhdetail { get; set; }
 
         public int MaHh { get; set; }
@@ -31,9 +31,5 @@ namespace aspNetCore8Mvc_Ecommerce1.ViewModels
         public DateTime? ModifiedOn { get; set; }
 
         public string? ModifiedBy { get; set; }
-
-        public virtual List<HangHoaDetailHistoryVM> HangHoaDetailHistories { get; set; } = null!;
-
-        public virtual List<HangHoaDetailImageVM> HangHoaDetailImages { get; set; } = null!;
     }
 }
