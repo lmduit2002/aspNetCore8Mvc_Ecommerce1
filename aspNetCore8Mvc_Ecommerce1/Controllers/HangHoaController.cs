@@ -6,14 +6,17 @@ namespace aspNetCore8Mvc_Ecommerce1.Controllers
 {
     public class HangHoaController : Controller
     {
+        private readonly IConfiguration _configuration;
         private readonly IHangHoaAppService _hangHoaAppService;
-        public HangHoaController(IHangHoaAppService hangHoaAppService) 
+        public HangHoaController(IHangHoaAppService hangHoaAppService, IConfiguration configuration) 
         {
             _hangHoaAppService = hangHoaAppService;
+            _configuration = configuration;
         }
         public async Task<IActionResult> Index(HangHoaSearch? model)
         {
-            return View(await _hangHoaAppService.HangHoa_SEARCH(model));
+            var data = await _hangHoaAppService.HangHoa_SEARCH(model);
+            return View(data);
         }
 
         public async Task<IActionResult> Detail(int id)
@@ -25,6 +28,7 @@ namespace aspNetCore8Mvc_Ecommerce1.Controllers
                 TempData["Message"] = "Không tìm thấy sản phẩm!";
                 return Redirect("/404");
             }
+            ViewData["APIUrl"] = _configuration["Url:localhost"];
             return View(data);
         }
     }

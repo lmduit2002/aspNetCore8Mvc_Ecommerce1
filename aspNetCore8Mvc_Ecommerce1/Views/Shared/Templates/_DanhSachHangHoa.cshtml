@@ -13,12 +13,7 @@
             <div class="col-lg-12">
                 <div class="row g-4">
                     <div class="col-xl-3">
-                        <form id="searchHHFrom" method="get" asp-controller="HangHoa" asp-action="Index">
-                        <div class="input-group w-100 mx-auto d-flex">
-                                <input id="searchText" type="search" name="TuKhoa" class="form-control p-3" placeholder="Tìm kiếm" aria-describedby="search-icon-1">
-                                <button type="submit" id="searchButton" class="input-group-text p-3"><i class="fa fa-search"></i></button>
-                        </div>
-                        </form>
+                        @await Html.PartialAsync("_TimKiemPanel")
                     </div>
                     <div class="col-6">
                         <a href="/HangHoa" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-20">

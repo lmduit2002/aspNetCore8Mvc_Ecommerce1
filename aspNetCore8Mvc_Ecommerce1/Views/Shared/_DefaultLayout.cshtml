@@ -30,6 +30,8 @@
     <link href="~/css/style.css" rel="stylesheet">
 
     <link href="~/css/customStyle.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -81,12 +83,19 @@
     <script src="~/lib/waypoints/waypoints.min.js"></script>
     <script src="~/lib/lightbox/js/lightbox.min.js"></script>
     <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
 
     @RenderSection("Scripts", required: false)
     <script type="module">
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-center" // Vị trí: top-right, top-center, bottom-right, etc.
+        };
         const forms = document.querySelectorAll('#searchHHFrom');
         const currentUrlParams = new URLSearchParams(window.location.search);
         forms.forEach(form => {

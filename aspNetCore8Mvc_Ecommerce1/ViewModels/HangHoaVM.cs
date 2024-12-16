@@ -15,7 +15,7 @@ namespace aspNetCore8Mvc_Ecommerce1.ViewModels
         public int SoLanXem { get; set; }
         public double? GiamGia { get; set; }
         public double? GiaDaGiam { get; set; }
-        public int? Daban {  get; set; }
+        public int? DaBan {  get; set; }
         public float? DiemDanhGia { get; set; }
 
         public virtual LoaiVM Loai { get; set; } = null!;

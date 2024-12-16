@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="wwwroot\js\Helpers\" />
+    <Folder Include="wwwroot\js\lib\" />
   </ItemGroup>
 
 </Project>

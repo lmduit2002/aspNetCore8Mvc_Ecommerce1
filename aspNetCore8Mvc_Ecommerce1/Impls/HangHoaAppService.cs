@@ -18,35 +18,17 @@ namespace aspNetCore8Mvc_Ecommerce1.Impls
 
         public async Task<List<HangHoaVM>> HangHoa_SEARCH(HangHoaSearch? model)
         {
-            double number = 123.45666;
-            double roued = Math.Round(1000 - number*100, 2);
-            int a = 1;
-            IQueryable<HangHoaVM> data = (from hh in _context.HangHoas
-                                          select new HangHoaVM
-                                          {
-                                              MaHh = hh.MaHh,
-                                              TenHh = hh.TenHh,
-                                              MaLoai = hh.MaLoai,
-                                              MoTaDonVi = hh.MoTaDonVi ?? "",
-                                              DonGia = hh.DonGia,
-                                              Daban = hh.DaBan,
-                                              Hinh = hh.Hinh ?? "",
-                                              NgaySx = hh.NgaySx,
-                                              GiamGia = hh.GiamGia,
-                                              Loai = ConvertLoaiToLoaiVM(hh.MaLoaiNavigation),
-                                              GiaDaGiam = hh.GiamGia > 0 ? Math.Round((double)hh.DonGia! - (double)hh.DonGia*hh.GiamGia/100, 2) : null
-                                          });
-            if(model != null)
+            IQueryable<HangHoa> query = _context.HangHoas.Include(hh => hh.MaLoaiNavigation);
+            if (model != null)
             {
-                data = data.Where(hh => 
-                (a == 1)
-                       && (hh.MaHh == model!.MaHh || model.MaHh == null)
+                query = query.Where(hh => 
+                       (hh.MaHh == model!.MaHh || model.MaHh == null)
                        && (hh.TenHh.Contains(model.TenHh!) || string.IsNullOrEmpty(model.TenHh))
                        && (hh.MaLoai == model.MaLoai || model.MaLoai == null)
-                       && (hh.Loai.TenLoai.Contains(model.TenLoai!) || string.IsNullOrEmpty(model.TenLoai))
+                       && (hh.MaLoaiNavigation.TenLoai.Contains(model.TenLoai!) || string.IsNullOrEmpty(model.TenLoai))
                        && (hh.NgaySx >= model.NgaySXFrom || string.IsNullOrEmpty(model.NgaySXFrom.ToString()))
                        && (hh.NgaySx <= model.NgaySXTo || string.IsNullOrEmpty(model.NgaySXTo.ToString()))
-                       && (hh.TenHh.Contains(model.TuKhoa!) || hh.Loai.TenLoai.Contains(model.TuKhoa!) || string.IsNullOrWhiteSpace(model.TuKhoa))
+                       && (hh.TenHh.Contains(model.TuKhoa!) || hh.MaLoaiNavigation.TenLoai.Contains(model.TuKhoa!) || string.IsNullOrWhiteSpace(model.TuKhoa))
                        && ((model!.DonGia == 1 && hh.DonGia < 50) 
                             || (model!.DonGia == 2 && hh.DonGia >= 50 && hh.DonGia < 100)
                             || (model!.DonGia == 3 && hh.DonGia >= 100 && hh.DonGia < 500)
@@ -54,54 +36,44 @@ namespace aspNetCore8Mvc_Ecommerce1.Impls
                             || (model!.DonGia ==  0 || model!.DonGia == null))
                 );
             }
-            var notSortedData = data;
-            if(model != null && model.sortBy != null)
+           
+            if(model?.sortBy != null)
             {
                 switch (model.sortBy)
                 {
                     case "giatangdan":
-                        data = data.OrderBy(hh => hh.DonGia);
+                        query = query.OrderBy(hh => hh.DonGia);
                         break;
                     case "giagiamdan":
-                        data = data.OrderByDescending(hh => hh.DonGia);
+                        query = query.OrderByDescending(hh => hh.DonGia);
                         break;
                     case "banchaynhat":
-                        data = data.OrderByDescending(hh => hh.Daban);
+                        query = query.OrderByDescending(hh => hh.DaBan);
                         break;
                     case "sanphammoi":
-                        data = data.OrderByDescending(hh => hh.NgaySx);
+                        query = query.OrderByDescending(hh => hh.NgaySx);
                         break;
-                    default : // mặc định
-                        data = notSortedData;
-                        break;
-                           
                 }
             }
-            return await data.Take(9).ToListAsync();
+            var data = await query.Take(9).ToListAsync();
+            return data.Select(hh => new HangHoaVM
+            {
+                MaHh = hh.MaHh,
+                TenHh = hh.TenHh,
+                MaLoai = hh.MaLoai,
+                MoTaDonVi = hh.MoTaDonVi ?? "",
+                DonGia = hh.DonGia,
+                DaBan = hh.DaBan,
+                Hinh = hh.Hinh ?? "",
+                NgaySx = hh.NgaySx,
+                GiamGia = hh.GiamGia,
+                Loai = ConvertLoaiToLoaiVM(hh.MaLoaiNavigation),
+                GiaDaGiam = hh.GiamGia > 0 ? Math.Round((double)hh.DonGia! - (double)hh.DonGia * hh.GiamGia / 100, 2) : null
+            }).ToList();
         }
 
         public async Task<HangHoaVM?> HangHoa_ById (int id)
         {
-            //IQueryable<HangHoaVM> hangHoa = from hh in _context.HangHoas
-            //                                where hh.MaHh == id
-            //                                select new HangHoaVM
-            //                                {
-            //                                    MaHh = hh.MaHh,
-            //                                    TenHh = hh.TenHh,
-            //                                    MaLoai = hh.MaLoai,
-            //                                    MoTaDonVi = hh.MoTaDonVi,
-            //                                    DonGia = hh.DonGia,
-            //                                    Hinh = hh.Hinh,
-            //                                    NgaySx = hh.NgaySx,
-            //                                    GiamGia = hh.GiamGia,
-            //                                    SoLanXem = hh.SoLanXem,
-            //                                    MoTa = hh.MoTa,
-            //                                    Loai = hh.MaLoaiNavigation,
-            //                                    DiemDanhGia = 5, // tinh sau
-            //                                    HangHoaDetail = ConvertModelToVM(hh.HangHoaDetails)
-            //                                };
-            //if (hangHoa == null) return null!;
-            //var result = await hangHoa.FirstOrDefaultAsync();
             var hh = await _context.HangHoas
                 .Include(h => h.MaLoaiNavigation)
                 .Include(h => h.HangHoaDetails)

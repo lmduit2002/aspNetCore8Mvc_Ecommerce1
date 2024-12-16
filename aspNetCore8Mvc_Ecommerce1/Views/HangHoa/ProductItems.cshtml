@@ -24,7 +24,7 @@
                         {
                             <p class="text-dark fs-5 fw-bold mb-0">$@item.DonGia</p>
                         }
-                        <a href="#" class="addToCartBtn btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>Thêm vào giỏ</a>
+                        @* <a href="#" class="addToCartBtn btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>Thêm vào giỏ</a> *@
                     </div>
                 </div>
             </div>
@@ -33,16 +33,16 @@
 }
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const addToCartBtns = document.querySelectorAll('.addToCartBtn');
+        // const addToCartBtns = document.querySelectorAll('.addToCartBtn');
 
-        addToCartBtns.forEach(function (btn) {
-            btn.addEventListener('click', function (event) {
-                event.preventDefault(); // Ngăn chuyển trang khi click vào nút "Thêm vào giỏ"
-                event.stopPropagation(); // Ngăn sự kiện click không lan ra thẻ <a> bên ngoài
+        // addToCartBtns.forEach(function (btn) {
+        //     btn.addEventListener('click', function (event) {
+        //         event.preventDefault(); // Ngăn chuyển trang khi click vào nút "Thêm vào giỏ"
+        //         event.stopPropagation(); // Ngăn sự kiện click không lan ra thẻ <a> bên ngoài
 
-                // Thêm logic thêm vào giỏ hàng tại đây
-                console.log('Đã thêm vào giỏ hàng');
-            });
-        });
+        //         // Thêm logic thêm vào giỏ hàng tại đây
+        //         console.log('Đã thêm vào giỏ hàng');
+        //     });
+        // });
     });
 </script>
